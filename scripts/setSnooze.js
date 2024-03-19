@@ -1,68 +1,83 @@
 async function setSnooze() {
-  //let username = document.getElementById("usernameInput").value;
-  //let password = document.getElementById("passwordInput").value;
   const snoozeMinutesOut = document.getElementById("snoozeMinutesOut").value;
   const snoozeMinutes = parseInt(snoozeMinutesOut.match(/\d+/)[0], 10);
 
-  //console.log("Username:", username);
-  //console.log("Password:", password);
-
-  const url = "https://rdx-04-dev-pivs.rdxpims.local/piwebapi";
-  //const token = btoa(username + ":" + password);
+  const currentUrl = window.location.host;
   const headers = new Headers();
-  //headers.append("Authorization", "Basic " + token);
   headers.append("Content-Type", "application/json");
   //headers.append("X-Requested-With", "");
-  const params = new URLSearchParams(window.location.search);
-  //console.log("params", params);
 
-  let now = new Date();
-  let snoozeUntil = new Date(now.getTime() + snoozeMinutes * 60 * 1000);
-
-  const content = {
-    getSnoozeWebID: {
-      Method: "GET",
-      Resource: url + "/attributes?" + params + "|Snooze",
-    },
-    postSnoozeValue: {
-      Method: "POST",
-      ParentIDs: ["getSnoozeWebID"],
-      Content: "{ Value: true }",
-      RequestTemplate: {
-        Resource: url + "/streams/{0}/value",
-      },
-      Parameters: ["$.getSnoozeWebID.Content.WebId"],
-    },
-    getSnoozeUntilWebID: {
-      Method: "GET",
-      Resource: url + "/attributes?" + params + "|Snooze|SnoozeUntil",
-    },
-    postSnoozeUntilValue: {
-      Method: "POST",
-      ParentIDs: ["getSnoozeUntilWebID"],
-      Content: `{ Value: '${snoozeUntil.toISOString()}' }`,
-      RequestTemplate: {
-        Resource: url + "/streams/{0}/value",
-      },
-      Parameters: ["$.getSnoozeUntilWebID.Content.WebId"],
-    },
-  };
-
+  const now = new Date();
+  const elementPath = getUrlPath();
+  const content = bodyBuilder(currentUrl, elementPath, now, snoozeMinutes);
   const parsedContent = JSON.stringify(content);
   //console.log(parsedContent);
 
-  fetch(url + "/batch", {
+  fetch("https://" + currentUrl + "/piwebapi/batch", {
     method: "POST",
     headers: headers,
     body: parsedContent,
-    mode: "cors",
     credentials: "same-origin",
   })
     .then((response) => {
       if (response.ok) {
         //console.log("OK", response);
         alert("Snooze set with success!");
+      } else {
+        throw new Error("Network response failed ", response.json());
       }
     })
     .catch((error) => alert(error));
+
+  function getUrlPath() {
+    const params = new URLSearchParams(window.location.search);
+    const path = params.get("path");
+
+    return path;
+  }
+  function bodyBuilder(serverName, elementPath, now, duration) {
+    return {
+      GET_Snooze_WebId: {
+        Method: "GET",
+        Resource:
+          "https://" +
+          serverName +
+          "/piwebapi/attributes?path=" +
+          elementPath +
+          "|Snooze",
+      },
+      POST_Snooze_value: {
+        Method: "POST",
+        ParentIDs: ["GET_Snooze_WebId"],
+        Content: '{"Value":"True", "Timestamp": "' + now.toISOString() + '",}',
+        RequestTemplate: {
+          Resource: "https://" + serverName + "/piwebapi/streams/{0}/value",
+        },
+        Parameters: ["$.GET_Snooze_WebId.Content.WebId"],
+      },
+      GET_Duration_WebId: {
+        Method: "GET",
+        Resource:
+          "https://" +
+          serverName +
+          "/piwebapi/attributes?path=" +
+          elementPath +
+          "|Snooze|Duration",
+      },
+      POST_Duration_value: {
+        Method: "POST",
+        ParentIDs: ["GET_Duration_WebId"],
+        Content:
+          '{"Value":"' +
+          duration +
+          '", "Timestamp": "' +
+          now.toISOString() +
+          '",}',
+        RequestTemplate: {
+          Resource: "https://" + serverName + "/piwebapi/streams/{0}/value",
+        },
+        Parameters: ["$.GET_Duration_WebId.Content.WebId"],
+      },
+    };
+  }
 }
