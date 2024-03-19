@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FEWS Snooze</title>
+    <!-- Add any necessary CSS or external libraries here -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div class="w-full px-8 flex justify-center">
+      <div class="w-full max-w-xl">
+        <header class="flex justify-between items-center">
+          <h1 class="text-3xl font-bold italic py-4">FEWS Snooze</h1>
+          <img
+            class="h-8"
+            alt="Logo da Cargill"
+            src="https://i0.wp.com/agroemdia.com.br/wp-content/uploads/2018/08/cargill-logo-24.png?resize=800%2C447&ssl=1"
+          />
+        </header>
+
+        <div class="grid gap-3">
+          <input
+            class="border-2 rounded-md py-1 px-2 border-slate-300"
+            type="text"
+            id="usernameInput"
+            placeholder="Enter username"
+          />
+          <input
+            class="border-2 rounded-md py-1 px-2 border-slate-300"
+            type="password"
+            id="passwordInput"
+            placeholder="Enter password"
+          />
+          <div class="grid sm:grid-cols-3 items-center gap-3">
+            <input
+              class="border-2 rounded-md py-1 px-2 border-slate-300 col-span-1"
+              type="number"
+              min="0"
+              max="120"
+              id="snoozeMinutesInput"
+              placeholder="Enter snooze time"
+              oninput="snoozeMinutesOut.value='Snooze for ' + (snoozeMinutesInput.value || 0) + ' minutes';checkSnoozeValue()"
+            />
+
+            <input
+              class="col-span-1 h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer"
+              type="range"
+              min="0"
+              max="120"
+              id="snoozeMinutesRange"
+              oninput="snoozeMinutesOut.value='Snooze for ' + (snoozeMinutesRange.value || 0) + ' minutes';checkSnoozeValue()"
+            />
+            <output id="snoozeMinutesOut"></output>
+          </div>
+
+          <button
+            id="snoozeButton"
+            class="bg-cyan-900 hover:bg-cyan-600 text-white font-bold py-2 px-3 rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed"
+            onclick="setSnooze()"
+          >
+            Set Snooze
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Include your JavaScript code below -->
+    <!--<script src="scripts/getTreeAF.js"></script>-->
+    <script src="scripts/setSnooze.js"></script>
+    <script src="scripts/checkSnoozeValue.js"></script>
+    <script>
+      checkSnoozeValue();
+      document.getElementById("snoozeMinutesOut").value =
+        "Snooze for " +
+        (document.getElementById("snoozeMinutesInput").value || 0) +
+        " minutes";
+    </script>
+  </body>
+</html>
