@@ -1,15 +1,8 @@
-# FEWS Snooze
+# FEWS Apps
 
-A simple website that allows users to ignore PI Notifications from specific tags.
+A repository for small applications that belong to FEWS
 
-## Features
+## Current Apps
 
-- Simple and intuitive interface
-- Auto-authorization
-- Cleaner notifications
-- Powered by PI Web API 
-
-## Colaborators
-
-- Kaio Lima
-- Henrique Lozano
+- Message of the Day
+- Snooze

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Message of the Day</title>
+    <!-- Add any necessary CSS or external libraries here -->
+    <script src="scripts/getStyle.js"></script>
+  </head>
+  <body>
+    <div class="w-full px-8 flex justify-center">
+      <div class="w-full max-w-xl">
+        <header class="flex justify-between items-center">
+          <h1 class="text-3xl font-bold italic py-4">Message of the Day</h1>
+          <img class="h-8" alt="Logo da Cargill" src="assets/cargillLogo.png" />
+        </header>
+
+        <div class="grid gap-3">
+          <input
+            class="border-2 rounded-md py-1 px-2 border-slate-300"
+            type="text"
+            id="messageL1"
+            placeholder="Message Line 1"
+          />
+          <input
+            class="border-2 rounded-md py-1 px-2 border-slate-300"
+            type="text"
+            id="messageL2"
+            placeholder="Message Line 2"
+          />
+          <input
+            class="border-2 rounded-md py-1 px-2 border-slate-300"
+            type="text"
+            id="messageL3"
+            placeholder="Message Line 3"
+          />
+          <div class="grid sm:grid-cols-3 gap-3">
+            <input
+              class="border-2 rounded-md py-1 px-2 border-slate-300 col-span-2"
+              type="number"
+              min="0"
+              max="120"
+              id="setTimeInput"
+              placeholder="Message duration"
+              oninput="setTimeOut.value='Expires in ' + (setTimeInput.value || 0) + ' hours';checkSetTime()"
+            />
+            <output id="setTimeOut"></output>
+          </div>
+          <button
+            id="setTimeButton"
+            class="bg-cyan-900 hover:bg-cyan-600 text-white font-bold py-2 px-3 rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed"
+            onclick="setMessage()"
+          >
+            Set Messages
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Include your JavaScript code below -->
+    <script src="scripts/setMessage.js"></script>
+    <script src="scripts/checkSetTime.js"></script>
+    <script>
+      checkSetTime();
+      document.getElementById("setTimeOut").value =
+        "Expires in " + (document.getElementById("setTimeInput").value || 0) + " hours";
+    </script>
+  </body>
+</html>
