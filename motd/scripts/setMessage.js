@@ -63,7 +63,7 @@ async function setMessage() {
           serverName +
           "/piwebapi/attributes?path=" +
           elementPath +
-          "|L1+Display+Message|L1+Message+of+the+Day",
+          "|L1+Displayed+Message|L1+Message+of+the+day",
       },
       POST_Message_L1_Value: {
         Method: "POST",
@@ -86,7 +86,7 @@ async function setMessage() {
           serverName +
           "/piwebapi/attributes?path=" +
           elementPath +
-          "|L2+Display+Message|L2+Message+of+the+Day",
+          "|L2+Displayed+Message|L2+Message+of+the+day",
       },
       POST_Message_L2_Value: {
         Method: "POST",
@@ -109,7 +109,7 @@ async function setMessage() {
           serverName +
           "/piwebapi/attributes?path=" +
           elementPath +
-          "|L3+Display+Message|L3+Message+of+the+Day",
+          "|L3+Displayed+Message|L3+Message+of+the+day",
       },
       POST_Message_L3_Value: {
         Method: "POST",
@@ -132,7 +132,7 @@ async function setMessage() {
           serverName +
           "/piwebapi/attributes?path=" +
           elementPath +
-          "|L1+Display+Message|Expiration+Time+(Hours)",
+          "|L1+Displayed+Message|Expiration+Time+(Hours)",
       },
       POST_Expiration_Time_Value: {
         Method: "POST",
