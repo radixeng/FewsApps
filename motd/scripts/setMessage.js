@@ -8,7 +8,7 @@ async function setMessage() {
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   //headers.append("Authorization", "");
-  //headers.append("X-Requested-With", "");
+  headers.append("X-Requested-With", "");
 
   const now = new Date();
   const elementPath = getUrlPath();
@@ -33,7 +33,7 @@ async function setMessage() {
     .then((response) => {
       if (response.ok) {
         //console.log("OK", response);
-        alert("Snooze set with success!");
+        alert("Message set with success!");
       } else {
         throw new Error("Network response failed ", response.json());
       }
