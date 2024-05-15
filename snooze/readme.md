@@ -2,6 +2,8 @@
 
 A simple website that allows users to ignore PI Notifications from specific tags.
 
+![Snooze Screen](./assets/snoozeScreen.png)
+
 ## Features
 
 - Simple and intuitive interface

@@ -2,6 +2,8 @@
 
 A simple website that allows users to set daily messages.
 
+![MOTD Screen](./assets/motdScreen.png)
+
 ## Features
 
 - Simple and intuitive interface
