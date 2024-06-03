@@ -17,15 +17,14 @@ async function setSnooze() {
     method: "POST",
     headers: headers,
     body: parsedContent,
-    credentials: "same-origin",
+  })
+    .then(async (response) => {
+      if (response.ok) return await response.json();
+      else throw new Error("Network response failed ", response.json());
   })
     .then((response) => {
-      if (response.ok) {
-        //console.log("OK", response);
+      getError(response);
         alert("Snooze set with success!");
-      } else {
-        throw new Error("Network response failed ", response.json());
-      }
     })
     .catch((error) => alert(error));
 
@@ -79,5 +78,33 @@ async function setSnooze() {
         Parameters: ["$.GET_Duration_WebId.Content.WebId"],
       },
     };
+  }
+  function getError(response) {
+    // Iterate through the response object
+    const errorArray = [];
+    for (const key in response) {
+      // Check if there are errors
+      if (response[key].Status >= 300) {
+        if (typeof response[key].Content === "string") {
+          errorArray.push({
+            status: response[key].Status,
+            message: response[key].Content,
+          });
+        } else if (response[key].Content.Errors) {
+          errorArray.push({
+            status: response[key].Status,
+            message: response[key].Content.Errors[0],
+          });
+        }
+      }
+    }
+    // Prioritize lower error codes, if any
+    if (errorArray.length > 0) {
+      errorArray.sort((a, b) => {
+        return a.status - b.status;
+      });
+      const firstError = errorArray[0];
+      throw new Error(`${firstError.status} ${firstError.message}`);
+    }
   }
 }
