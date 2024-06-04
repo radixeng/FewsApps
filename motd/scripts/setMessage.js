@@ -30,13 +30,13 @@ async function setMessage() {
     body: parsedContent,
     credentials: "same-origin",
   })
+    .then(async (response) => {
+      if (response.ok) return await response.json();
+      else throw new Error("Network response failed ", response.json());
+    })
     .then((response) => {
-      if (response.ok) {
-        //console.log("OK", response);
-        alert("Message set with success!");
-      } else {
-        throw new Error("Network response failed ", response.json());
-      }
+      getError(response);
+      alert("Message set with success!");
     })
     .catch((error) => alert(error));
 
@@ -149,5 +149,33 @@ async function setMessage() {
         Parameters: ["$.GET_Expiration_Time_WebID.Content.WebId"],
       },
     };
+  }
+  function getError(response) {
+    // Iterate through the response object
+    const errorArray = [];
+    for (const key in response) {
+      // Check if there are errors
+      if (response[key].Status >= 300) {
+        if (typeof response[key].Content === "string") {
+          errorArray.push({
+            status: response[key].Status,
+            message: response[key].Content,
+          });
+        } else if (response[key].Content.Errors) {
+          errorArray.push({
+            status: response[key].Status,
+            message: response[key].Content.Errors[0],
+          });
+        }
+      }
+    }
+    // Prioritize lower error codes, if any
+    if (errorArray.length > 0) {
+      errorArray.sort((a, b) => {
+        return a.status - b.status;
+      });
+      const firstError = errorArray[0];
+      throw new Error(`${firstError.status} ${firstError.message}`);
+    }
   }
 }
