@@ -5,7 +5,7 @@ async function setSnooze() {
   const currentUrl = window.location.host;
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
-  //headers.append("X-Requested-With", "");
+  headers.append("X-Requested-With", "");
 
   const now = new Date();
   const elementPath = getUrlPath();
